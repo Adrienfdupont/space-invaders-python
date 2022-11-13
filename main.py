@@ -13,6 +13,9 @@ BG_PATH = os.path.join("assets", "images", "background.jpg")
 BG_IMAGE = pygame.image.load(BG_PATH).convert()
 BACKGROUND = pygame.transform.scale(BG_IMAGE, (WIDTH, HEIGHT))
 
+# générer le vaisseau
+SHIP = Ship(WIDTH // 2)
+
 def main():
     pygame.display.set_caption(NAME)
     clock = pygame.time.Clock()
