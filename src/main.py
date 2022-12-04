@@ -2,6 +2,10 @@ import pygame
 import os
 from game import Game
 from ship import Ship
+from invader1 import Invader1
+from invader2 import Invader2
+from invader3 import Invader3
+from entity import Entity
 
 # créer la fenêtre de jeu
 window = pygame.display.set_mode((Game.WIDTH, Game.HEIGHT))
@@ -17,16 +21,23 @@ x = Game.WIDTH // 2
 y = Game.HEIGHT - 30
 ship = Ship(x, y)
 
+# générer les invaders
+invaders = []
+interval = Invader1.WIDTH
+for i in range(8):
+    invaders.append(Invader3(interval * i * 2, 0))
+for i in range(8):
+    invaders.append(Invader2(interval * i * 2, Invader3.HEIGHT + 10))
+for i in range(8):
+    invaders.append(Invader1(interval * i * 2, Invader2.HEIGHT + Invader3.HEIGHT + 20))
+
 
 def draw_window():
     window.blit(background, (0, 0))
 
-    # affichage du vaisseau
-    ship.draw(window)
-
-    # affichage des missiles
-    for missile in ship.missiles:
-        missile.draw(window)
+    # affichage des entités
+    for instance in Entity.INSTANCES:
+        instance.draw(window)
 
     pygame.display.update()
 
