@@ -7,15 +7,16 @@ from missile import Missile
 class Ship(Entity):
     WIDTH, HEIGHT = 56, 35
     IMAGE_FILE_NAME = "ship.png"
-    RELOAD_TIME = 3
+    RELOAD_TIME = 1
     VELOCITY = 5
+    MISSILE_VELOCITY = -10
+    MISSILES = []
+    INSTANCES = []
 
     def __init__(self, x, y):
-        self.missiles = []
         self.loaded = True
-        x = x - Ship.WIDTH // 2
-        y = y - Ship.HEIGHT // 2
         super().__init__(x, y, Ship.WIDTH, Ship.HEIGHT, Ship.IMAGE_FILE_NAME)
+        Ship.INSTANCES.append(self)
 
     def move(self, key, window_width):
         if key[pygame.K_LEFT] and self.rect.x > 0:
@@ -27,7 +28,7 @@ class Ship(Entity):
         if self.loaded:
             x = self.rect.x + Ship.WIDTH // 2
             y = self.rect.y + Ship.HEIGHT // 2
-            self.missiles.append(Missile(x, y))
+            Missile(x, y, Ship.MISSILE_VELOCITY, Ship.MISSILES)
             self.loaded = False
 
             reload = Timer(Ship.RELOAD_TIME, self.reload)
@@ -35,3 +36,6 @@ class Ship(Entity):
 
     def reload(self):
         self.loaded = True
+
+    def die(self):
+        self.alive = False

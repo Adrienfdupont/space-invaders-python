@@ -11,6 +11,8 @@ class Entity:
         self.image = pygame.transform.scale(image, (width, height))
         self.rect = pygame.Rect(x, y, width, height)
         Entity.INSTANCES.append(self)
+        self.alive = True
 
     def draw(self, window):
-        window.blit(self.image, (self.rect.x, self.rect.y))
+        if self.alive == True:
+            window.blit(self.image, (self.rect.x, self.rect.y))
