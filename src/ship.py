@@ -25,7 +25,7 @@ class Ship(Entity):
             self.rect.x += Ship.VELOCITY
 
     def shoot(self):
-        if self.loaded:
+        if self.alive and self.loaded:
             x = self.rect.x + Ship.WIDTH // 2
             y = self.rect.y + Ship.HEIGHT // 2
             Missile(x, y, Ship.MISSILE_VELOCITY, Ship.MISSILES)

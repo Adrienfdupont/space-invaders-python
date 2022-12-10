@@ -8,15 +8,24 @@ from entity import Entity
 
 
 WIDTH, HEIGHT = 1600, 900
+game = "running"
 
 # créer la fenêtre de jeu
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Invaders")
 
-# récupérer l'image du background et la traiter
+# récupérer les images de fond et les traiter
 bg_path = os.path.join("assets", "images", "background.jpg")
 bg_image = pygame.image.load(bg_path).convert()
 background = pygame.transform.scale(bg_image, (WIDTH, HEIGHT))
+
+gameover_path = os.path.join("assets", "images", "gameover.jpg")
+gameover_image = pygame.image.load(gameover_path).convert()
+gameover = pygame.transform.scale(gameover_image, (WIDTH // 2, HEIGHT // 2))
+
+win_path = os.path.join("assets", "images", "win.jpg")
+win_image = pygame.image.load(win_path).convert()
+win = pygame.transform.scale(win_image, (WIDTH // 2, HEIGHT // 2))
 
 # générer le vaisseau
 x = WIDTH // 2 - Ship.WIDTH // 2
@@ -64,9 +73,17 @@ for section in range(9):
 def draw_window():
     window.blit(background, (0, 0))
 
-    # affichage des entités
-    for instance in Entity.INSTANCES:
-        instance.draw(window)
+    x = WIDTH // 2 - WIDTH // 4
+    y = HEIGHT // 2 - HEIGHT // 4
+
+    match game:
+        case "running":
+            for instance in Entity.INSTANCES:
+                instance.draw(window)
+        case "lose":
+            window.blit(gameover, (x, y))
+        case "win":
+            window.blit(win, (x, y))
 
     pygame.display.update()
 
@@ -79,26 +96,40 @@ def handle_input(key):
 
 
 def logic():
+    global game
+    # vérifier si partie terminée
+    for ship in Ship.INSTANCES:
+        if ship.alive:
+            break
+        game = "lose"
+        return
+
+    for invader in Invader.INSTANCES:
+        if invader.alive:
+            break
+        game = "win"
+        return
+    
     # déplacement des missiles
-        for missile in Ship.MISSILES:
-            missile.move()
-            missile.check_collision(Invader.INSTANCES)
-            missile.check_collision(Wall.INSTANCES)
+    for missile in Ship.MISSILES:
+        missile.move()
+        missile.check_collision(Invader.INSTANCES)
+        missile.check_collision(Wall.INSTANCES)
 
-        for missile in Invader.MISSILES:
-            missile.move()
-            missile.check_collision(Wall.INSTANCES)
-            missile.check_collision(Ship.INSTANCES)
+    for missile in Invader.MISSILES:
+        missile.move()
+        missile.check_collision(Wall.INSTANCES)
+        missile.check_collision(Ship.INSTANCES)
 
-        # déplacement des invaders
-        for invader in Invader.INSTANCES:
-            invader.move(WIDTH, HEIGHT)
-            invader.check_collision(Wall.INSTANCES, ship)
+    # déplacement des invaders
+    for invader in Invader.INSTANCES:
+        invader.move(WIDTH, HEIGHT)
+        invader.check_collision(Wall.INSTANCES, ship)
+
 
 def main():
-    game = True
     clock = pygame.time.Clock()
-    while game == True:
+    while True:
         clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

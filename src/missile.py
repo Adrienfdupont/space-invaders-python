@@ -11,7 +11,6 @@ class Missile(Entity):
         super().__init__(x, y, Missile.WIDTH, Missile.HEIGHT, Missile.IMAGE_FILE_NAME)
         instances.append(self)
         self.velocity = velocity
-        print(self.velocity)
 
     def move(self):
         if self.rect.y + Missile.HEIGHT > 0:
