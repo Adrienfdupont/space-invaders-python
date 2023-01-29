@@ -1,30 +1,24 @@
-from entity import Entity
+import pygame
+import os
 
+class Missile(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height, velocity):
+        super().__init__()
 
-class Missile(Entity):
-    WIDTH, HEIGHT = 4.9, 18.9
-    IMAGE_FILE_NAME = "missile.png"
-
-    def __init__(self, x, y, velocity, instances):
-        x = x - Missile.WIDTH // 2
-        y = y - Missile.HEIGHT // 2
-        super().__init__(x, y, Missile.WIDTH, Missile.HEIGHT, Missile.IMAGE_FILE_NAME)
-        instances.append(self)
+        self.width = width
+        self.height = height
         self.velocity = velocity
 
-    def move(self):
-        if self.rect.y + Missile.HEIGHT > 0:
-            self.rect.y += self.velocity
+        raw_image = pygame.image.load(os.path.join("assets", "images", "missile.png"))
+        scaled_image = pygame.transform.scale(raw_image, (self.width, self.height))
 
-    def check_collision(self, others):
-        if self.alive == False:
-            return
-        for other in others:
-            if other.alive == False:
-                continue
-            if self.rect.colliderect(other):
-                other.die()
-                self.die()
+        self.image = scaled_image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
-    def die(self):
-        self.alive = False
+    def update(self):
+        if self.rect.y + self.height > 0:
+            self.rect.y -= self.velocity
+        else:
+            self.die()

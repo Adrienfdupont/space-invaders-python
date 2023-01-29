@@ -1,41 +1,34 @@
 import pygame
-from threading import Timer
-from entity import Entity
+import os
 from missile import Missile
 
+class Ship(pygame.sprite.Sprite):
+    def __init__(self, window_width, window_height, width, height, velocity):
+        super().__init__()
 
-class Ship(Entity):
-    WIDTH, HEIGHT = 56, 35
-    IMAGE_FILE_NAME = "ship.png"
-    RELOAD_TIME = 1
-    VELOCITY = 5
-    MISSILE_VELOCITY = -10
-    MISSILES = []
-    INSTANCES = []
+        self.width = width
+        self.height = height
+        self.velocity = velocity
 
-    def __init__(self, x, y):
-        self.loaded = True
-        super().__init__(x, y, Ship.WIDTH, Ship.HEIGHT, Ship.IMAGE_FILE_NAME)
-        Ship.INSTANCES.append(self)
+        raw_image = pygame.image.load(os.path.join("assets", "images", "ship.png"))
+        scaled_image = pygame.transform.scale(raw_image, (self.width, self.height))
 
-    def move(self, key, window_width):
-        if key[pygame.K_LEFT] and self.rect.x > 0:
-            self.rect.x -= Ship.VELOCITY
-        elif key[pygame.K_RIGHT] and self.rect.x + Ship.WIDTH < window_width:
-            self.rect.x += Ship.VELOCITY
+        self.image = scaled_image
+        self.rect = self.image.get_rect()
+        self.rect.x = window_width // 2 - self.width // 2
+        self.rect.y = window_height - self.height
+
+        self.missiles = pygame.sprite.Group()
+    
+    def move_left(self):
+        if self.rect.x > 0:
+            self.rect.x -= self.velocity
+
+    def move_right(self, window_width):
+        if self.rect.x + self.width < window_width:
+            self.rect.x += self.velocity
 
     def shoot(self):
-        if self.alive and self.loaded:
-            x = self.rect.x + Ship.WIDTH // 2
-            y = self.rect.y + Ship.HEIGHT // 2
-            Missile(x, y, Ship.MISSILE_VELOCITY, Ship.MISSILES)
-            self.loaded = False
-
-            reload = Timer(Ship.RELOAD_TIME, self.reload)
-            reload.start()
-
-    def reload(self):
-        self.loaded = True
-
-    def die(self):
-        self.alive = False
+        self.missiles.add(Missile(
+            self.rect.x, self.rect.y, 5, 19, 5
+        ))
