@@ -1,63 +1,51 @@
-from entity import Entity
-from missile import Missile
-from threading import Timer
-import random
+import pygame
+import os
 
+class Invader(pygame.sprite.Sprite):
+    instances = pygame.sprite.Group()
+    velocity = 3
+    levels = [
+        {
+            'image': 'invader_1.png',
+            'width': 49, 
+            'height': 36,
+        },
+        {
+            'image': 'invader_2.png',
+            'width': 49,
+            'height': 33,
+        },
+        {
+            'image': 'invader_3.png',
+            'width': 49,
+            'height': 23,
+        },
+    ]
 
-class Invader(Entity):
-    VELOCITY = 3
-    MISSILE_VELOCITY = 10
-    RELOAD_TIME = 15
-    INSTANCES = []
-    MISSILES = []
+    def __init__(self, x, y, line):
+        super().__init__()
+        Invader.instances.add(self)
 
-    def __init__(self, x, y, width, height, image_file_name):
-        super().__init__(x, y, width, height, image_file_name)
-        Invader.INSTANCES.append(self)
-        self.move_right = True
-        self.width = width
-        self.height = height
-        self.reload()
+        self.width = Invader.levels[2 - line]['width']
+        self.height = Invader.levels[2 - line]['height']
 
-    def move(self, game_width, game_height):
-        if self.move_right == True:
-            if self.rect.x < game_width - 49:
-                self.rect.x += Invader.VELOCITY
-            else:
-                for invader in Invader.INSTANCES:
-                    invader.rect.y += 150
-                    invader.move_right = False
-        else:
-            if self.rect.x > 0:
-                self.rect.x -= Invader.VELOCITY
-            else:
-                for invader in Invader.INSTANCES:
-                    invader.rect.y += 150
-                    invader.move_right = True
+        raw_image = pygame.image.load(os.path.join("assets", "images", Invader.levels[2 - line]['image']))
+        scaled_image = pygame.transform.scale(raw_image, (self.width, self.height))
 
-    def check_collision(self, walls, ship):
-        if self.alive == False:
-            return
-        for wall in walls:
-            if wall.alive == False:
-                continue
-            if self.rect.colliderect(wall):
-                wall.die()
-        if self.rect.colliderect(ship):
-            ship.die()
+        self.image = scaled_image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.direction = self.velocity
 
-    def shoot(self):
-        x = self.rect.x + self.width // 2
-        y = self.rect.y + self.height // 2
-        Missile(x, y, Invader.MISSILE_VELOCITY, Invader.MISSILES)
-        self.reload()
+    def update(self, window_width):
+        self.move(window_width)
 
-    def reload(self):
-        reload = Timer(random.randint(1, Invader.RELOAD_TIME), self.shoot)
-        reload.start()
-
-    def die(self):
-        self.alive = False
-        
-                
-                
+    def move(self, window_width):
+        if self.rect.x <= 0:
+            self.direction = self.velocity
+            self.rect.y += self.height
+        if self.rect.x + self.width >= window_width:
+            self.direction = - self.velocity
+            self.rect.y += self.height
+        self.rect.x += self.direction
