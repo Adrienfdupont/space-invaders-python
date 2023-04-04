@@ -1,27 +1,19 @@
 import pygame
-import os
 import random
 from threading import Timer
 from InvaderMissile import InvaderMissile
+from Entity import Entity
 
-class Invader(pygame.sprite.Sprite):
+class Invader(Entity):
     sprites = pygame.sprite.Group()
 
-    def __init__(self, x, y, width, height, filename):
-        super().__init__()
-        Invader.sprites.add(self)
-        self.width = width
-        self.height = height
+    def __init__(self, x, y, width, height, filename, velocity, reload_time):
+        self.velocity = velocity
+        self.reload_time = reload_time
         self.direction = self.velocity
-        
-        raw_image = pygame.image.load(os.path.join("assets", "images", filename))
-        scaled_image = pygame.transform.scale(raw_image, (self.width, self.height))
-        self.image = scaled_image
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
         self.reload()
+        super().__init__(x, y, width, height, filename)
+        Invader.sprites.add(self)
 
     def update(self, window_width):
         self.move(window_width)
