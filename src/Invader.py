@@ -14,7 +14,7 @@ class Invader(pygame.sprite.Sprite):
         self.height = height
         self.direction = self.velocity
         
-        raw_image = pygame.image.load(filename)
+        raw_image = pygame.image.load(os.path.join("assets", "images", filename))
         scaled_image = pygame.transform.scale(raw_image, (self.width, self.height))
         self.image = scaled_image
         self.rect = self.image.get_rect()

@@ -6,6 +6,6 @@ class Invader3(Invader):
     height = 23
 
     def __init__(self, x, y):
-        self.velocity = 10
+        self.velocity = 5
         self.reload_time = 10
-        super().__init__(x, y, Invader3.width, Invader3.height)
+        super().__init__(x, y, Invader3.width, Invader3.height, Invader3.filename)

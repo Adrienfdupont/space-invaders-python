@@ -2,6 +2,9 @@ import sys
 import pygame
 from Ship import Ship
 from Invader import Invader
+from Invader1 import Invader1
+from Invader2 import Invader2
+from Invader3 import Invader3
 from ShipMissile import ShipMissile
 from InvaderMissile import InvaderMissile
 
@@ -19,12 +22,21 @@ class Game:
         self.ship = Ship(self.window_width, self.window_height)
 
         # generate invaders
-        nb_lines, nb_rows = 3, 7
-        for line in range(nb_lines):
-            for row in range(nb_rows):
-                x = 10 * line + 1 + self.window_width // nb_rows * row
-                y = 50 * line
-                Invader(x, y, line)
+        nb_per_line = 7
+        for i in range(nb_per_line):
+            x = 10 + i * self.window_width // nb_per_line
+            y = 10
+            Invader3(x, y)
+
+        for i in range(nb_per_line):
+            x = 10 + i * self.window_width // nb_per_line
+            y = 50
+            Invader2(x, y)
+
+        for i in range(nb_per_line):
+            x = 10 + i * self.window_width // nb_per_line
+            y = 90
+            Invader1(x, y)
 
         # generate walls
 
