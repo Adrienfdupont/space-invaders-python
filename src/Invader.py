@@ -6,35 +6,15 @@ from InvaderMissile import InvaderMissile
 
 class Invader(pygame.sprite.Sprite):
     sprites = pygame.sprite.Group()
-    velocity = 3
-    levels = [
-        {
-            'image': 'invader_1.png',
-            'width': 49, 
-            'height': 36,
-        },
-        {
-            'image': 'invader_2.png',
-            'width': 49,
-            'height': 33,
-        },
-        {
-            'image': 'invader_3.png',
-            'width': 49,
-            'height': 23,
-        },
-    ]
 
-    def __init__(self, x, y, line):
-        self.width = Invader.levels[2 - line]['width']
-        self.height = Invader.levels[2 - line]['height']
-        self.direction = self.velocity
-        self.reload_time = 10
+    def __init__(self, x, y, width, height, filename):
         super().__init__()
         Invader.sprites.add(self)
-
-        path = os.path.join("assets", "images", Invader.levels[2 - line]['image'])
-        raw_image = pygame.image.load(path)
+        self.width = width
+        self.height = height
+        self.direction = self.velocity
+        
+        raw_image = pygame.image.load(filename)
         scaled_image = pygame.transform.scale(raw_image, (self.width, self.height))
         self.image = scaled_image
         self.rect = self.image.get_rect()
