@@ -1,7 +1,9 @@
+import sys
 import pygame
-from ship import Ship
-from missile import Missile
-from invader import Invader
+from Ship import Ship
+from Invader import Invader
+from ShipMissile import ShipMissile
+from InvaderMissile import InvaderMissile
 
 class Game:
     def __init__(self):
@@ -11,6 +13,7 @@ class Game:
         self.window_width = 1280
         self.window_height = 720
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
+        pygame.display.set_caption("Space Invaders")
 
         # generate ship
         self.ship = Ship(self.window_width, self.window_height)
@@ -31,7 +34,9 @@ class Game:
             clock.tick(60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self.clear()
                     pygame.quit()
+                    sys.exit()
             self.handle_input(pygame.key.get_pressed())
             self.update()
             self.render()
@@ -45,13 +50,19 @@ class Game:
             self.ship.shoot()
 
     def update(self):
-        Ship.instances.update()
-        Missile.instances.update()
-        Invader.instances.update(self.window_width)
+        Ship.sprites.update()
+        Invader.sprites.update(self.window_width)
+        ShipMissile.sprites.update(Invader.sprites)
+        InvaderMissile.sprites.update(self.window_height, Ship.sprites)
 
     def render(self):
         self.window.fill((0,0,0))
-        Ship.instances.draw(self.window)
-        Missile.instances.draw(self.window)
-        Invader.instances.draw(self.window)
+        Ship.sprites.draw(self.window)
+        Invader.sprites.draw(self.window)
+        ShipMissile.sprites.draw(self.window)
+        InvaderMissile.sprites.draw(self.window)
         pygame.display.flip()
+
+    def clear(self):
+        for invader in Invader.sprites.sprites():
+            invader.timer.cancel()
