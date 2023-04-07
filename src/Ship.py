@@ -15,7 +15,7 @@ class Ship(Entity):
         x = window_width // 2 - Ship.width // 2
         y = window_height - self.height
         self.loaded = True
-        super().__init__(x, y, Ship.width, Ship.height, Ship.filename)
+        super().__init__(Ship.width, Ship.height, x, y, Ship.filename)
         Ship.sprites.add(self)
 
     def move_left(self):

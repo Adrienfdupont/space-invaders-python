@@ -4,7 +4,7 @@ import os
 class Entity(pygame.sprite.Sprite):
     sprites = pygame.sprite.Group()
 
-    def __init__(self, x, y, width, height, filename):
+    def __init__(self, width, height, x, y, filename):
         super().__init__()
         image_path = os.path.join("assets", "images", filename)
         raw_image = pygame.image.load(image_path)

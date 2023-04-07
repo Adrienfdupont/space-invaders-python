@@ -7,4 +7,4 @@ class Missile(Entity):
     def __init__(self, width, height, shooter_x, shooter_width, shooter_y):
         x = shooter_x + shooter_width // 2 - width // 2
         y = shooter_y
-        super().__init__(x, y, width, height, Missile.filename)
+        super().__init__(width, height, x, y, Missile.filename)

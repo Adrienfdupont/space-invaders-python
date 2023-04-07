@@ -12,7 +12,7 @@ class Invader(Entity):
         self.reload_time = reload_time
         self.direction = self.velocity
         self.reload()
-        super().__init__(x, y, width, height, filename)
+        super().__init__(width, height, x, y, filename)
         Invader.sprites.add(self)
 
     def update(self, window_width):
