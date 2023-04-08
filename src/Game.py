@@ -40,8 +40,8 @@ class Game:
             Invader1(x, y)
 
         # generate walls
-        nb_rows = 3
-        nb_walls = 4
+        nb_rows = 5
+        nb_walls = 3
         brick_width = 10
         bricks_per_wall = 15
         wall_length = bricks_per_wall * brick_width
@@ -52,7 +52,9 @@ class Game:
             for wall in range(nb_walls):
                 x_start = wall_length * wall + blank_length * (wall + 1)
                 for brick in range(bricks_per_wall):
-                    if row >= 1 or brick <= 1 or brick >= bricks_per_wall - 2:
+                    if (row >= nb_rows // 2
+                    or brick <= bricks_per_wall * 1/4- 1
+                    or brick >= bricks_per_wall * 3/4):
                         x = x_start + brick * brick_width
                         y = y_start - row * brick_width
                         Brick(brick_width, x, y)
@@ -81,8 +83,8 @@ class Game:
     def update(self):
         Ship.sprites.update()
         Invader.sprites.update(self.window_width)
-        ShipMissile.sprites.update(Invader.sprites)
-        InvaderMissile.sprites.update(self.window_height, Ship.sprites)
+        ShipMissile.sprites.update(self.window_height, Invader.sprites, Brick.sprites)
+        InvaderMissile.sprites.update(self.window_height, Ship.sprites, Brick.sprites)
 
     def render(self):
         self.window.fill((0,0,0))

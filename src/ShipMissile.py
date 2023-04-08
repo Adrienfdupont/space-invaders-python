@@ -11,15 +11,11 @@ class ShipMissile(Missile):
         super().__init__(self.width, self.height, ship_x, ship_width, ship_y)
         ShipMissile.sprites.add(self)
 
-    def update(self, invader_sprites):
-        self.move()
-        self.check_collision(invader_sprites)
-
-    def move(self):
+    def move(self, window_height):
         if self.rect.y + self.height > 0:
             self.rect.y += self.velocity
         else:
             ShipMissile.sprites.remove(self)
 
-    def check_collision(self, invader_sprites):
+    def check_target_collision(self, invader_sprites):
         pygame.sprite.groupcollide(ShipMissile.sprites, invader_sprites, True, True)
