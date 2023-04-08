@@ -7,10 +7,12 @@ from Entity import Entity
 class Invader(Entity):
     sprites = pygame.sprite.Group()
 
-    def __init__(self, x, y, width, height, filename, velocity, reload_time):
+    def __init__(self, width, height, x, y, filename, velocity, reload_time):
+        self.width = width
+        self.height = height
         self.velocity = velocity
-        self.reload_time = reload_time
         self.direction = self.velocity
+        self.reload_time = reload_time
         self.reload()
         super().__init__(width, height, x, y, filename)
         Invader.sprites.add(self)

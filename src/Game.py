@@ -2,12 +2,10 @@ import sys
 import pygame
 from Ship import Ship
 from Invader import Invader
-from Invader1 import Invader1
-from Invader2 import Invader2
-from Invader3 import Invader3
 from ShipMissile import ShipMissile
 from InvaderMissile import InvaderMissile
 from Brick import Brick
+from data import invader1, invader2, invader3
 
 class Game:
     def __init__(self):
@@ -27,17 +25,16 @@ class Game:
         for i in range(nb_per_line):
             x = 10 + i * self.window_width // nb_per_line
             y = 10
-            Invader3(x, y)
+            Invader(invader3["width"], invader3["height"], x, y, invader3["filename"], invader3["velocity"], invader3["reload_time"])
 
         for i in range(nb_per_line):
             x = 10 + i * self.window_width // nb_per_line
             y = 50
-            Invader2(x, y)
-
+            Invader(invader2["width"], invader2["height"], x, y, invader2["filename"], invader2["velocity"], invader2["reload_time"])
         for i in range(nb_per_line):
             x = 10 + i * self.window_width // nb_per_line
             y = 90
-            Invader1(x, y)
+            Invader(invader1["width"], invader1["height"], x, y, invader1["filename"], invader1["velocity"], invader1["reload_time"])
 
         # generate walls
         nb_rows = 5
