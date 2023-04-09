@@ -5,10 +5,9 @@ from Entity import Entity
 class Missile(ABC, Entity):
     filename = "missile.png"
 
-    def __init__(self, width, height, shooter_x, shooter_width, shooter_y):
-        x = shooter_x + shooter_width // 2 - width // 2
-        y = shooter_y
-        super().__init__(width, height, x, y, Missile.filename)
+    def __init__(self,x, y, width, height, filename, velocity):
+        super().__init__(x, y, width, height, filename)
+        self.velocity = velocity
 
     def update(self, window_height, target_sprites, brick_sprites):
         self.move(window_height)

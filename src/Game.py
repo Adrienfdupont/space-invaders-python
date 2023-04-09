@@ -1,11 +1,11 @@
-import sys
 import pygame
+import sys
 from Ship import Ship
 from Invader import Invader
 from ShipMissile import ShipMissile
 from InvaderMissile import InvaderMissile
 from Brick import Brick
-from data import invader1, invader2, invader3
+from data import invader1 as i1, invader2 as i2, invader3 as i3,  ship as sh
 
 class Game:
     def __init__(self):
@@ -18,23 +18,31 @@ class Game:
         pygame.display.set_caption("Space Invaders")
 
         # generate ship
-        self.ship = Ship(self.window_width, self.window_height)
+        self.ship = Ship(
+            self.window_width // 2 - sh["width"] // 2,
+            self.window_height - sh["height"],
+            sh["width"],
+            sh["height"],
+            sh["filename"],
+            sh["velocity"],
+            sh["reload_time"]
+        )
 
         # generate invaders
         nb_per_line = 7
         for i in range(nb_per_line):
             x = 10 + i * self.window_width // nb_per_line
             y = 10
-            Invader(invader3["width"], invader3["height"], x, y, invader3["filename"], invader3["velocity"], invader3["reload_time"])
+            Invader(x, y, i3["width"], i3["height"], i3["filename"], i3["velocity"], i3["reload_time"])
 
         for i in range(nb_per_line):
             x = 10 + i * self.window_width // nb_per_line
             y = 50
-            Invader(invader2["width"], invader2["height"], x, y, invader2["filename"], invader2["velocity"], invader2["reload_time"])
+            Invader(x, y, i2["width"], i2["height"], i2["filename"], i2["velocity"], i2["reload_time"])
         for i in range(nb_per_line):
             x = 10 + i * self.window_width // nb_per_line
             y = 90
-            Invader(invader1["width"], invader1["height"], x, y, invader1["filename"], invader1["velocity"], invader1["reload_time"])
+            Invader(x, y, i1["width"], i1["height"], i1["filename"], i1["velocity"], i1["reload_time"])
 
         # generate walls
         nb_rows = 5
@@ -46,15 +54,19 @@ class Game:
         
         for row in range(nb_rows):
             y_start = self.window_height - 100
+
             for wall in range(nb_walls):
                 x_start = wall_length * wall + blank_length * (wall + 1)
+
                 for brick in range(bricks_per_wall):
                     if (row >= nb_rows // 2
-                    or brick <= bricks_per_wall * 1/4- 1
+                    or brick <= bricks_per_wall * 1/4 - 1
                     or brick >= bricks_per_wall * 3/4):
-                        x = x_start + brick * brick_width
-                        y = y_start - row * brick_width
-                        Brick(brick_width, x, y)
+                        Brick(
+                            x_start + brick * brick_width,
+                            y_start - row * brick_width,
+                            brick_width
+                        )
 
     def run(self):
         clock = pygame.time.Clock()

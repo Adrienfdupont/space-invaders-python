@@ -4,11 +4,15 @@ from Missile import Missile
 class ShipMissile(Missile):
     sprites = pygame.sprite.Group()
 
-    def __init__(self, ship_x, ship_width, ship_y):
-        self.width = 10
-        self.height = 38
-        self.velocity = -15
-        super().__init__(self.width, self.height, ship_x, ship_width, ship_y)
+    def __init__(self, x, y, width, height, filename, velocity):
+        super().__init__(
+            x,
+            y,
+            width,
+            height,
+            filename,
+            velocity
+        )
         ShipMissile.sprites.add(self)
 
     def move(self, window_height):

@@ -2,35 +2,38 @@ import pygame
 from threading import Timer
 from ShipMissile import ShipMissile
 from Entity import Entity
+from data import ship_missile as sm
 
 class Ship(Entity):
     sprites = pygame.sprite.Group()
-    width = 56
-    height = 35
-    velocity = 5
-    reload_time = 1
-    filename = "ship.png"
 
-    def __init__(self, window_width, window_height):
-        x = window_width // 2 - Ship.width // 2
-        y = window_height - self.height
-        self.loaded = True
-        super().__init__(Ship.width, Ship.height, x, y, Ship.filename)
+    def __init__(self, x, y, width, height, filename, velocity, reload_time):
+        super().__init__(x, y, width, height, filename)
         Ship.sprites.add(self)
+        self.velocity = velocity
+        self.reload_time = reload_time
+        self.loaded = True
 
     def move_left(self):
         if self.rect.x > 0:
-            self.rect.x -= Ship.velocity
+            self.rect.x -= self.velocity
 
     def move_right(self, window_width):
-        if self.rect.x + Ship.width < window_width:
-            self.rect.x += Ship.velocity
+        if self.rect.x + self.width < window_width:
+            self.rect.x += self.velocity
 
     def shoot(self):
         if self.loaded:
-            ShipMissile(self.rect.x, Ship.width, self.rect.y)
+            ShipMissile(
+                self.rect.x + self.width // 2 - sm["width"] // 2,
+                self.rect.y,
+                sm["width"],
+                sm["height"],
+                sm["filename"],
+                sm["velocity"]
+            )
             self.loaded = False
-            reload = Timer(Ship.reload_time, self.reload)
+            reload = Timer(self.reload_time, self.reload)
             reload.start()
 
     def reload(self):

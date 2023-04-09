@@ -3,19 +3,18 @@ import random
 from threading import Timer
 from InvaderMissile import InvaderMissile
 from Entity import Entity
+from data import invader_missile as im
 
 class Invader(Entity):
     sprites = pygame.sprite.Group()
 
-    def __init__(self, width, height, x, y, filename, velocity, reload_time):
-        self.width = width
-        self.height = height
+    def __init__(self, x, y, width, height, filename, velocity, reload_time):
+        super().__init__(x, y, width, height, filename)
+        Invader.sprites.add(self)
         self.velocity = velocity
         self.direction = self.velocity
         self.reload_time = reload_time
         self.reload()
-        super().__init__(width, height, x, y, filename)
-        Invader.sprites.add(self)
 
     def update(self, window_width):
         self.move(window_width)
@@ -31,7 +30,14 @@ class Invader(Entity):
 
     def shoot(self):
         if Invader.sprites.has(self):
-            InvaderMissile(self.rect.x, self.rect.width, self.rect.y)
+            InvaderMissile(
+                self.rect.x + self.width // 2 - im["width"] // 2,
+                self.rect.y,
+                im["width"],
+                im["height"],
+                im["filename"],
+                im["velocity"]
+            )
             self.reload()
 
     def reload(self):
