@@ -30,19 +30,37 @@ class Game:
 
         # generate invaders
         nb_per_line = 7
+        invader_start = 20
         for i in range(nb_per_line):
-            x = 10 + i * self.window_width // nb_per_line
-            y = 10
-            Invader(x, y, i3["width"], i3["height"], i3["filename"], i3["velocity"], i3["reload_time"])
-
+            Invader(
+                10 + i * self.window_width // nb_per_line,
+                invader_start,
+                i3["width"],
+                i3["height"],
+                i3["filename"],
+                i3["velocity"],
+                i3["reload_time"]
+            )
         for i in range(nb_per_line):
-            x = 10 + i * self.window_width // nb_per_line
-            y = 50
-            Invader(x, y, i2["width"], i2["height"], i2["filename"], i2["velocity"], i2["reload_time"])
+            Invader(
+                10 + i * self.window_width // nb_per_line,
+                invader_start + i3["height"],
+                i2["width"],
+                i2["height"],
+                i2["filename"],
+                i2["velocity"],
+                i2["reload_time"]
+            )
         for i in range(nb_per_line):
-            x = 10 + i * self.window_width // nb_per_line
-            y = 90
-            Invader(x, y, i1["width"], i1["height"], i1["filename"], i1["velocity"], i1["reload_time"])
+            Invader(
+                10 + i * self.window_width // nb_per_line,
+                invader_start + + i3["height"] +  i2["height"],
+                i1["width"],
+                i1["height"],
+                i1["filename"],
+                i1["velocity"],
+                i1["reload_time"]
+            )
 
         # generate walls
         nb_rows = 5
@@ -53,7 +71,7 @@ class Game:
         blank_length = (self.window_width - (wall_length * nb_walls)) // (nb_walls + 1)
         
         for row in range(nb_rows):
-            y_start = self.window_height - 100
+            y_start = self.window_height - sh["height"] * 2
 
             for wall in range(nb_walls):
                 x_start = wall_length * wall + blank_length * (wall + 1)
