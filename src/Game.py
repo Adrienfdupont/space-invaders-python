@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from Ship import Ship
 from Invader import Invader
 from ShipMissile import ShipMissile
@@ -16,7 +17,8 @@ class Game:
         self.window_height = 720
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption("Space Invaders")
-
+        self.title_font = pygame.font.Font(os.path.join("assets", "fonts", "PressStart2P-Regular.ttf"), 24)
+        self.title_surface = self.title_font.render("Space Invaders", True, (0, 255, 0))
         # generate ship
         self.ship = Ship(
             self.window_width // 2 - sh["width"] // 2,
@@ -30,7 +32,7 @@ class Game:
 
         # generate invaders
         nb_per_line = 7
-        invader_start = 20
+        invader_start = 50
         for i in range(nb_per_line):
             Invader(
                 10 + i * self.window_width // nb_per_line,
@@ -115,6 +117,10 @@ class Game:
 
     def render(self):
         self.window.fill((0,0,0))
+        # print title
+        self.window.blit(
+            self.title_surface, (self.window_width // 2 - self.title_surface.get_width() // 2, 10)
+        )
         Ship.sprites.draw(self.window)
         Invader.sprites.draw(self.window)
         ShipMissile.sprites.draw(self.window)
