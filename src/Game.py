@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 import sys
 import os
 from Ship import Ship
@@ -87,6 +88,9 @@ class Game:
                             y_start - row * brick_width,
                             brick_width
                         )
+
+        sound = mixer.Sound(os.path.join("assets", "sound", "music.ogg"))
+        sound.play()
 
     def run(self):
         clock = pygame.time.Clock()

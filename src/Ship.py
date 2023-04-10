@@ -1,4 +1,6 @@
 import pygame
+import os
+from pygame import mixer
 from threading import Timer
 from ShipMissile import ShipMissile
 from Entity import Entity
@@ -32,6 +34,8 @@ class Ship(Entity):
                 sm["filename"],
                 sm["velocity"]
             )
+            sound = mixer.Sound(os.path.join("assets", "sound", "shoot.wav"))
+            sound.play()
             self.loaded = False
             reload = Timer(self.reload_time, self.reload)
             reload.start()

@@ -1,4 +1,6 @@
 import pygame
+import os
+from pygame import mixer
 from Missile import Missile
 
 class ShipMissile(Missile):
@@ -22,4 +24,6 @@ class ShipMissile(Missile):
             ShipMissile.sprites.remove(self)
 
     def check_target_collision(self, invader_sprites):
-        pygame.sprite.groupcollide(ShipMissile.sprites, invader_sprites, True, True)
+        if pygame.sprite.groupcollide(ShipMissile.sprites, invader_sprites, True, True):
+            sound = mixer.Sound(os.path.join("assets", "sound", "explosion.wav"))
+            sound.play()
