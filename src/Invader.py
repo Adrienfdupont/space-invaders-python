@@ -43,5 +43,5 @@ class Invader(Entity):
     def reload(self):
         min = self.reload_time // 2
         max = self.reload_time * 1.5
-        self.timer = Timer(random.randint(min, max), self.shoot)
+        self.timer = Timer(random.uniform(min, max), self.shoot)
         self.timer.start()
